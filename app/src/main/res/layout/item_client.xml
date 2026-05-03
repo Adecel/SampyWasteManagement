@@ -4,25 +4,31 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
-    android:layout_marginVertical="8dp"
+    android:layout_marginVertical="6dp"
     app:cardCornerRadius="12dp"
-    app:cardElevation="2dp"
+    app:cardElevation="1dp"
     app:strokeWidth="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="16dp">
 
-        <!-- Icon on the Left -->
-        <ImageView
+        <!-- Client Icon / Initial -->
+        <FrameLayout
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@drawable/bg_status_badge"
-            android:padding="8dp"
-            android:src="@android:drawable/ic_menu_today"
-            app:tint="@color/colorPrimary" />
+            android:backgroundTint="#E8F5E9">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:src="@android:drawable/ic_menu_myplaces"
+                app:tint="@color/colorPrimary" />
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -32,7 +38,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/txtAddress"
+                android:id="@+id/tvClientName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Green Valley Subdivision"
@@ -41,42 +47,21 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/txtWasteType"
+                android:id="@+id/tvClientAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Residual Waste"
-                android:textSize="13sp" />
-
-            <TextView
-                android:id="@+id/txtDateTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="May 20, 2025 8:00 AM"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/txtDriver"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Collected by: Juan Dela Cruz"
-                android:textSize="12sp" />
-
+                android:text="123 Green St., Cityville"
+                android:textSize="13sp"
+                android:textColor="#666666" />
         </LinearLayout>
 
-        <!-- Status Badge on the Right -->
-        <TextView
-            android:id="@+id/txtStatusBadge"
+        <ImageButton
+            android:id="@+id/btnClientMenu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/bg_status_badge"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="4dp"
-            android:text="Completed"
-            android:textColor="#2E7D32"
-            android:textSize="10sp"
-            android:textStyle="bold" />
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_more"
+            app:tint="#888888" />
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

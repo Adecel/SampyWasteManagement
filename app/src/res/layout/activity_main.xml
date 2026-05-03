@@ -15,7 +15,8 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:title="Dashboard"
-            app:titleTextColor="@color/white" />
+            app:titleTextColor="@color/white"
+            app:navigationIcon="@android:drawable/ic_menu_sort_by_size" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -47,7 +48,6 @@
 
                 <!-- Clients Card -->
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardClients"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -64,8 +64,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Clients"
-                            android:textColor="#2E7D32"
-                            android:textStyle="bold"/>
+                            android:textColor="#2E7D32" />
                         <TextView
                             android:id="@+id/tvClientCount"
                             android:layout_width="wrap_content"
@@ -84,7 +83,6 @@
 
                 <!-- Collections Card -->
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardCollections"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -101,8 +99,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Collections"
-                            android:textColor="#1565C0"
-                            android:textStyle="bold"/>
+                            android:textColor="#1565C0" />
                         <TextView
                             android:id="@+id/tvCollectionCount"
                             android:layout_width="wrap_content"
@@ -121,7 +118,6 @@
 
                 <!-- Logs Card -->
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardLogs"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -138,8 +134,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Logs"
-                            android:textColor="#E65100"
-                            android:textStyle="bold"/>
+                            android:textColor="#E65100" />
                         <TextView
                             android:id="@+id/tvLogCount"
                             android:layout_width="wrap_content"
@@ -174,8 +169,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Today's Collection"
-                            android:textColor="#7B1FA2"
-                            android:textStyle="bold"/>
+                            android:textColor="#7B1FA2" />
                         <TextView
                             android:id="@+id/tvTodayCount"
                             android:layout_width="wrap_content"

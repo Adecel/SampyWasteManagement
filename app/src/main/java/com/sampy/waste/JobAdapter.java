@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -17,37 +18,25 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
         this.jobList = jobList;
     }
 
+    @NonNull
     @Override
-    public JobViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public JobViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_job, parent, false);
         return new JobViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(JobViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull JobViewHolder holder, int position) {
         Job job = jobList.get(position);
 
-        String status = job.getStatus();
-
         holder.txtAddress.setText(job.getAddress());
-        holder.txtStatus.setText("Status: " + status);
-        holder.txtDriver.setText("Driver: " + job.getDriver());
+        holder.txtWasteType.setText(job.getWasteType());
+        holder.txtDateTime.setText(job.getDateTime());
+        holder.txtDriver.setText("Collected by: " + job.getDriver());
+        holder.txtStatusBadge.setText(job.getStatus());
 
-        updateStatusColor(holder, status);
-
-        holder.itemView.setOnClickListener(v -> {
-
-            if (status.equals("Pending")) {
-                job.setStatus("Collected");
-            } else if (status.equals("Collected")) {
-                job.setStatus("Missed");
-            } else {
-                job.setStatus("Pending");
-            }
-
-            notifyItemChanged(position);
-        });
+        updateStatusUI(holder, job.getStatus());
     }
 
     @Override
@@ -55,27 +44,29 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
         return jobList.size();
     }
 
-    private void updateStatusColor(JobViewHolder holder, String status) {
-        if (status.equals("Collected")) {
-            holder.txtStatus.setTextColor(android.graphics.Color.GREEN);
-        }
-        else if (status.equals("Missed")) {
-            holder.txtStatus.setTextColor(android.graphics.Color.RED);
-        }
-        else {
-            holder.txtStatus.setTextColor(android.graphics.Color.parseColor("#FFA500"));
+    private void updateStatusUI(JobViewHolder holder, String status) {
+        if ("Collected".equalsIgnoreCase(status) || "Completed".equalsIgnoreCase(status)) {
+            holder.txtStatusBadge.setTextColor(android.graphics.Color.parseColor("#2E7D32"));
+            holder.txtStatusBadge.getBackground().setTint(android.graphics.Color.parseColor("#E8F5E9"));
+        } else if ("Missed".equalsIgnoreCase(status)) {
+            holder.txtStatusBadge.setTextColor(android.graphics.Color.RED);
+            holder.txtStatusBadge.getBackground().setTint(android.graphics.Color.parseColor("#FFEBEE"));
+        } else {
+            holder.txtStatusBadge.setTextColor(android.graphics.Color.parseColor("#E65100"));
+            holder.txtStatusBadge.getBackground().setTint(android.graphics.Color.parseColor("#FFF3E0"));
         }
     }
-    public static class JobViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txtAddress, txtStatus, txtDriver;
+    public static class JobViewHolder extends RecyclerView.ViewHolder {
+        TextView txtAddress, txtWasteType, txtDateTime, txtDriver, txtStatusBadge;
 
         public JobViewHolder(View itemView) {
             super(itemView);
-
             txtAddress = itemView.findViewById(R.id.txtAddress);
-            txtStatus = itemView.findViewById(R.id.txtStatus);
+            txtWasteType = itemView.findViewById(R.id.txtWasteType);
+            txtDateTime = itemView.findViewById(R.id.txtDateTime);
             txtDriver = itemView.findViewById(R.id.txtDriver);
+            txtStatusBadge = itemView.findViewById(R.id.txtStatusBadge);
         }
     }
 }
