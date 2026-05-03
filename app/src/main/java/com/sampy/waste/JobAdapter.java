@@ -28,22 +28,26 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
     public void onBindViewHolder(JobViewHolder holder, int position) {
         Job job = jobList.get(position);
 
-        holder.txtAddress.setText(job.getAddress());
         String status = job.getStatus();
 
+        holder.txtAddress.setText(job.getAddress());
         holder.txtStatus.setText("Status: " + status);
-
-// Change color based on status
-        if (status.equals("Collected")) {
-            holder.txtStatus.setTextColor(android.graphics.Color.GREEN);
-        }
-        else if (status.equals("Missed")) {
-            holder.txtStatus.setTextColor(android.graphics.Color.RED);
-        }
-        else {
-            holder.txtStatus.setTextColor(android.graphics.Color.parseColor("#FFA500")); // orange/yellow
-        }
         holder.txtDriver.setText("Driver: " + job.getDriver());
+
+        updateStatusColor(holder, status);
+
+        holder.itemView.setOnClickListener(v -> {
+
+            if (status.equals("Pending")) {
+                job.setStatus("Collected");
+            } else if (status.equals("Collected")) {
+                job.setStatus("Missed");
+            } else {
+                job.setStatus("Pending");
+            }
+
+            notifyItemChanged(position);
+        });
     }
 
     @Override
@@ -51,6 +55,17 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
         return jobList.size();
     }
 
+    private void updateStatusColor(JobViewHolder holder, String status) {
+        if (status.equals("Collected")) {
+            holder.txtStatus.setTextColor(android.graphics.Color.GREEN);
+        }
+        else if (status.equals("Missed")) {
+            holder.txtStatus.setTextColor(android.graphics.Color.RED);
+        }
+        else {
+            holder.txtStatus.setTextColor(android.graphics.Color.parseColor("#FFA500"));
+        }
+    }
     public static class JobViewHolder extends RecyclerView.ViewHolder {
 
         TextView txtAddress, txtStatus, txtDriver;

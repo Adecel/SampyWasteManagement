@@ -1,19 +1,26 @@
 package com.sampy.waste;
 
-import static com.sampy.waste.R.*;
-
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerJobs;
+    Button btnAddJob;
+    List<Job> jobList;
+    JobAdapter adapter;
+    AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,17 +28,51 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         recyclerJobs = findViewById(R.id.recyclerJobs);
+        btnAddJob = findViewById(R.id.btnAddJob);
 
-        List<Job> jobList = new ArrayList<>();
+        // 1. Initialize Database FIRST before using it
+        db = Room.databaseBuilder(
+                getApplicationContext(),
+                AppDatabase.class,
+                "sampy-db"
+        ).allowMainThreadQueries().build();
 
-        // Sample data
-        jobList.add(new Job("123 Main Street", "Pending", "John"));
-        jobList.add(new Job("45 Green Road", "Collected", "Mike"));
-        jobList.add(new Job("78 Sunset Ave", "Missed", "Sarah"));
+        // 2. Fetch Jobs from DB
+        jobList = db.jobDao().getAllJobs();
 
-        JobAdapter adapter = new JobAdapter(jobList);
-
+        // 3. Setup Adapter and RecyclerView
+        adapter = new JobAdapter(jobList);
         recyclerJobs.setLayoutManager(new LinearLayoutManager(this));
         recyclerJobs.setAdapter(adapter);
+
+        // 4. Setup Click Listener
+        btnAddJob.setOnClickListener(v -> {
+            LayoutInflater inflater = LayoutInflater.from(this);
+            View dialogView = inflater.inflate(R.layout.dialog_add_job, null);
+
+            EditText etAddress = dialogView.findViewById(R.id.etAddress);
+            EditText etDriver = dialogView.findViewById(R.id.etDriver);
+
+            new AlertDialog.Builder(this)
+                    .setTitle("Add New Job")
+                    .setView(dialogView)
+                    .setPositiveButton("Add", (dialog, which) -> {
+                        String address = etAddress.getText().toString();
+                        String driver = etDriver.getText().toString();
+
+                        if (!address.isEmpty() && !driver.isEmpty()) {
+                            Job newJob = new Job(address, "Pending", driver);
+                            
+                            // Save to database
+                            db.jobDao().insert(newJob);
+                            
+                            // Update UI
+                            jobList.add(newJob);
+                            adapter.notifyItemInserted(jobList.size() - 1);
+                        }
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
+        });
     }
 }
