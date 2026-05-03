@@ -123,6 +123,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     private void refreshDashboard() {
         int clientCount = db.clientDao().getClientCount();
         int jobCount = db.jobDao().getJobCount();

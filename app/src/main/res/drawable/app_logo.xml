@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+    <!-- Dark Green Background -->
+    <path
+        android:fillColor="#1B5E20"
+        android:pathData="M0,0h200v200H0z" />
+    <!-- Light Green "A" Shape -->
+    <path
+        android:fillColor="#C8E6C9"
+        android:pathData="M100,30L30,170h35l15-35h40l15,35h35L100,30z M85,110l15-35l15,35H85z" />
+    <!-- Dark Green "S" Shape overlaying the middle of "A" -->
+    <path
+        android:fillColor="#1B5E20"
+        android:pathData="M115,100c0-10-8-15-15-15s-15,5-15,15s8,15,15,15s15,5,15,15s-8,15-15,15s-15-5-15-15h-10c0,15,10,25,25,25s25-10,25-25s-10-25-25-25s-25-5-25-15s10-15,15-15s15,10,15,15H115z" />
+</vector>

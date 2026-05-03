@@ -1,5 +1,6 @@
 package com.sampy.waste;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,12 +9,18 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
+
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.List;
 
@@ -22,6 +29,7 @@ public class ClientsActivity extends AppCompatActivity {
     private RecyclerView recyclerClients;
     private ClientAdapter adapter;
     private List<Client> clientList;
+    private DrawerLayout drawerLayout;
     private AppDatabase db;
 
     @Override
@@ -35,10 +43,32 @@ public class ClientsActivity extends AppCompatActivity {
                 .allowMainThreadQueries()
                 .build();
 
-        // Setup Toolbar
+        // Setup Toolbar & Drawer
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(v -> finish());
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        navigationView.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.nav_dashboard) {
+                startActivity(new Intent(ClientsActivity.this, MainActivity.class));
+                finish();
+            } else if (id == R.id.nav_logs) {
+                startActivity(new Intent(ClientsActivity.this, LogsActivity.class));
+                finish();
+            } else if (id == R.id.nav_settings) {
+                Toast.makeText(this, "Settings clicked", Toast.LENGTH_SHORT).show();
+            }
+            drawerLayout.closeDrawer(GravityCompat.START);
+            return true;
+        });
 
         // Initialize Views
         recyclerClients = findViewById(R.id.recyclerClients);
@@ -52,6 +82,15 @@ public class ClientsActivity extends AppCompatActivity {
 
         // Add Client Click
         btnAddClient.setOnClickListener(v -> showAddClientDialog());
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout != null && drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private void showAddClientDialog() {
