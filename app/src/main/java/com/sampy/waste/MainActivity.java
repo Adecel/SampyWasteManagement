@@ -10,11 +10,18 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
+
+import com.google.android.material.navigation.NavigationView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -27,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView tvClientCount, tvCollectionCount, tvLogCount, tvTodayCount;
     private View cardClients, cardCollections, cardLogs;
+    private DrawerLayout drawerLayout;
     private AppDatabase db;
 
     @Override
@@ -48,6 +56,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        navigationView.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.nav_clients) {
+                startActivity(new Intent(MainActivity.this, ClientsActivity.class));
+            } else if (id == R.id.nav_logs) {
+                startActivity(new Intent(MainActivity.this, LogsActivity.class));
+            } else if (id == R.id.nav_dashboard) {
+                // Already here
+            } else if (id == R.id.nav_settings) {
+                Toast.makeText(this, "Settings clicked", Toast.LENGTH_SHORT).show();
+            }
+            drawerLayout.closeDrawer(GravityCompat.START);
+            return true;
+        });
+
         tvClientCount = findViewById(R.id.tvClientCount);
         tvCollectionCount = findViewById(R.id.tvCollectionCount);
         tvLogCount = findViewById(R.id.tvLogCount);
@@ -74,13 +108,18 @@ public class MainActivity extends AppCompatActivity {
         });
 
         cardCollections.setOnClickListener(v -> {
-            // Placeholder for now, maybe same as logs
-            Toast.makeText(this, "Collections Clicked", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainActivity.this, LogsActivity.class);
+            startActivity(intent);
         });
 
         cardLogs.setOnClickListener(v -> {
-            // Placeholder for logs activity if separate
-            Toast.makeText(this, "Logs Clicked", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainActivity.this, LogsActivity.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.btnViewAllLogs).setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, LogsActivity.class);
+            startActivity(intent);
         });
     }
 
