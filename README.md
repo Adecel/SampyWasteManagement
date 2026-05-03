@@ -35,3 +35,7 @@ The **Sampy Waste Management App** is built to help organizations manage waste c
 ---
 
 ## 🗂️ Project Structure
+
+
+<img width="1536" height="1024" alt="ChatGPT Image May 3, 2026, 08_48_58 PM" src="https://github.com/user-attachments/assets/2b59b583-dfe5-422f-9e2f-ba11786bb28e" />
+
