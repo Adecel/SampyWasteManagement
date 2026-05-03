@@ -12,4 +12,10 @@ public interface JobDao {
 
     @Query("SELECT * FROM Job")
     List<Job> getAllJobs();
+
+    @Query("SELECT COUNT(*) FROM Job")
+    int getJobCount();
+
+    @Query("SELECT COUNT(*) FROM Job WHERE dateTime LIKE :dateQuery")
+    int getTodayJobCount(String dateQuery);
 }
