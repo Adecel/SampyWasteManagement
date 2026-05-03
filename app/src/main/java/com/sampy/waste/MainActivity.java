@@ -30,22 +30,18 @@ public class MainActivity extends AppCompatActivity {
         recyclerJobs = findViewById(R.id.recyclerJobs);
         btnAddJob = findViewById(R.id.btnAddJob);
 
-        // 1. Initialize Database FIRST before using it
         db = Room.databaseBuilder(
                 getApplicationContext(),
                 AppDatabase.class,
                 "sampy-db"
         ).allowMainThreadQueries().build();
 
-        // 2. Fetch Jobs from DB
         jobList = db.jobDao().getAllJobs();
 
-        // 3. Setup Adapter and RecyclerView
         adapter = new JobAdapter(jobList);
         recyclerJobs.setLayoutManager(new LinearLayoutManager(this));
         recyclerJobs.setAdapter(adapter);
 
-        // 4. Setup Click Listener
         btnAddJob.setOnClickListener(v -> {
             LayoutInflater inflater = LayoutInflater.from(this);
             View dialogView = inflater.inflate(R.layout.dialog_add_job, null);
